@@ -5,7 +5,6 @@ use std::{
     collections::HashSet,
     ffi::OsStr,
     iter::from_fn,
-    os::unix::ffi::OsStrExt,
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -114,7 +113,7 @@ impl BrowserView {
 
 fn root_dir() -> &'static Path {
     cfg_select! {
-        windows => todo!(),
+        windows => Path::new("C:\\"),
         _ => Path::new("/"),
     }
 }

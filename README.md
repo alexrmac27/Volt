@@ -18,6 +18,30 @@ If anyone can volunteer to improve the DAW, please do! PRs are super welcome.
 Here's a screenshot:
 ![Volt DAW current state](./images/volt-preview-7.png)
 
+## Platform and feature status
+
+Volt currently targets desktop systems. Its GPUI windowing and desktop audio-device setup do not provide an Android app, so Android phone support needs a mobile-capable UI and audio backend (or a separate companion app); it is not achieved by resizing the desktop window. The file browser now uses the Windows system drive as its starting location, but a Windows build and audio-device test are still needed before calling Windows 11 support verified. Windows VST3 plugins will also need a native plugin host and compatible 64-bit plugin binaries.
+
+What is present today:
+- Browse files and import supported audio, including WAV, MP3, FLAC, Ogg, and Opus.
+- Preview audio and place audio clips on a playlist with waveform rendering, playback, tempo/time-signature controls, and basic clip/selection editing.
+- A WIP mixing/audio engine and theme support.
+
+What is not present yet: a finished project format, MIDI editor or piano roll, instruments, a beat machine or step sequencer, plugin/VST hosting, and an AI assistant. Mixer, effects, and several playlist workflows are also unfinished; see the roadmap below.
+
+### VST and Windows requirements
+
+Using VST instruments and effects requires more than recognizing `.vst3` files. Volt needs a VST3 host that can scan and load plugins, process audio/MIDI in real time, expose plugin controls and GUIs, route tracks, and save/restore plugin state with projects. A reliable host also needs plugin validation and crash isolation. Windows builds need compatible 64-bit Windows plugins and dependable low-latency audio-device support; ASIO is a common option, while the current audio layer is based on CPAL. VST3 SDK terms and redistribution requirements must be followed. None of this plugin hosting is implemented yet.
+
+### Requested features
+
+- Beat machine and step sequencer: drum/sample lanes, editable steps, tempo-synced playback, velocity, swing, pattern chaining, and project save/load. MIDI export and piano-roll integration can follow.
+- Piano workflow: a capable piano roll, an on-screen multi-octave keyboard for mouse/touch input, and live MIDI input from external keyboards. Planned editor tools include draw/select/move/resize notes, snap and quantize, velocity/expression lanes, scale highlighting, and undo/redo.
+- Yamaha keyboard support: assuming “PM45” means the Yamaha P-45, support it as a USB MIDI input with device selection, hot-plug handling, low-latency monitoring, and sustain-pedal input. USB MIDI sends note/control data; to record the keyboard's own audio, connect its audio output to an audio interface/input.
+- Piano sounds: provide a built-in sampler instrument with velocity layers and sustain-pedal behavior, and investigate an optional Salamander Grand Piano sample-library download or bundle after verifying its license and attribution requirements. Sample playback does not require VST hosting; users' VST instruments do.
+- AI assistant: an optional, user-invoked helper for DAW guidance and tasks such as generating/editing patterns, BPM detection, or audio-to-MIDI suggestions. Audio or project data should not be sent to an online service without clear consent; local models and cloud services should be selectable rather than assumed.
+- Android phone workflow: first confirm a mobile UI/audio framework that supports Android, then build touch-sized transport and sequencer views, Android audio I/O, file-picker/storage access, and installable packaging. A remote-control companion is a smaller alternative, but would not make the full DAW run on the phone.
+
 ## Our Roadmap:
 
 We have a list of things we want to achieve, and here it is for easy editing and viewing:
@@ -25,7 +49,7 @@ We have a list of things we want to achieve, and here it is for easy editing and
     - [ ] Define a spec
     - [ ] Implementation
         - [ ] Store arrangements (and the playlist)
-        - [ ] Store timing information (time signature and BPM, etc)
+        - [ ] Save project BPM and time signature; persist tempo-map changes when tempo automation is added
         - [ ] Store MIDI
         - [ ] DAW file autosearching if audio file not found
         - [ ] Store references to audio (DO NOT STORE THE ENTIRE AUDIO)
@@ -48,7 +72,15 @@ We have a list of things we want to achieve, and here it is for easy editing and
     - [ ] Shortcuts
     - [ ] Arrangements
     - [ ] Importing other arrangements into an existing arrangement
-- [ ] Piano Roll/MIDI Editor
+- [ ] Piano Roll and MIDI workflow
+    - [ ] Piano roll note draw, select, move, resize, snap/grid, and quantize
+    - [ ] Velocity and expression lanes, scale highlighting, undo/redo, and keyboard shortcuts
+    - [ ] Multi-octave virtual piano keyboard with polyphonic mouse/touch input and sustain
+    - [ ] MIDI device selection, hot-plug, live input/monitoring, and sustain-pedal support
+    - [ ] Project save/load for MIDI notes, instruments, and controller data
+    - [ ] Test USB MIDI input with Yamaha P-45; support audio capture through an audio interface separately
+    - [ ] Built-in sampler instrument with velocity layers and sustain behavior
+    - [ ] Evaluate optional Salamander Grand Piano sample availability and comply with its license/attribution
 - [ ] UI & UX
     - [x] Theming system
         - This is WIP
@@ -92,6 +124,17 @@ We have a list of things we want to achieve, and here it is for easy editing and
         - [ ] Converting audio to MIDI using Machine Learning tools
         - [ ] Audio declipping using Machine Learning tools
         - [ ] Audio BPM detection
+- [ ] Beat machine and step sequencer
+    - [ ] Drum/sample lanes and step editing
+    - [ ] Velocity, swing, and pattern chaining
+    - [ ] Save patterns in project files and sync playback to the playlist
+- [ ] AI assistance
+    - [ ] DAW help and opt-in pattern generation/editing
+    - [ ] BPM detection and audio-to-MIDI assistance
+    - [ ] Document privacy boundaries and provide local/cloud choices
+- [ ] Android phone support
+    - [ ] Validate a mobile-capable UI and audio stack (current GPUI desktop app is not an Android app)
+    - [ ] Touch-first controls, Android audio I/O, file access, and packaging
 
 The roadmap is still very work-in-progress, we're structuring it as we go, not everything may be mentioned.
 
