@@ -25,9 +25,10 @@ Volt currently targets desktop systems. Its GPUI windowing and desktop audio-dev
 What is present today:
 - Browse files and import supported audio, including WAV, MP3, FLAC, Ogg, and Opus.
 - Preview audio and place audio clips on a playlist with waveform rendering, playback, tempo/time-signature controls, and basic clip/selection editing.
+- Use the built-in 16-step piano-note grid and drum sequencer, with a virtual octave keyboard and synthesized placeholder sounds.
 - A WIP mixing/audio engine and theme support.
 
-What is not present yet: a finished project format, MIDI editor or piano roll, instruments, a beat machine or step sequencer, plugin/VST hosting, and an AI assistant. Mixer, effects, and several playlist workflows are also unfinished; see the roadmap below.
+What is not present yet: a finished project format, MIDI device/file support, Salamander piano samples, plugin/VST hosting, and an AI assistant. The piano and drum sounds are synthesized placeholders, not sampled instruments. Volt remains a desktop application; Android is not currently supported. Mixer, effects, and several playlist workflows are also unfinished; see the roadmap below.
 
 ### VST and Windows requirements
 
@@ -73,6 +74,7 @@ We have a list of things we want to achieve, and here it is for easy editing and
     - [ ] Arrangements
     - [ ] Importing other arrangements into an existing arrangement
 - [ ] Piano Roll and MIDI workflow
+    - [x] Basic one-octave virtual keyboard, 16-step piano-note grid, and drum pattern grid with synthesized placeholder sounds
     - [ ] Piano roll note draw, select, move, resize, snap/grid, and quantize
     - [ ] Velocity and expression lanes, scale highlighting, undo/redo, and keyboard shortcuts
     - [ ] Multi-octave virtual piano keyboard with polyphonic mouse/touch input and sustain

@@ -26,7 +26,7 @@ use crate::{theme::{default, gray}, components::svg_icon::{IconRegistry, SvgIcon
 
 use crate::components::adjustable_input::AdjustableInput;
 use crate::theme::ThemeColors;
-use crate::views::{browser::BrowserView, playlist::PlaylistView};
+use crate::views::{browser::BrowserView, piano_machine::PianoMachine, playlist::PlaylistView};
 
 mod components;
 mod theme;
@@ -478,6 +478,7 @@ impl Global for Drag {}
 struct Volt {
     browser: Entity<BrowserView>,
     playlist: Entity<PlaylistView>,
+    piano_machine: Entity<PianoMachine>,
     browser_size: f32,
     theme: Arc<ThemeColors>,
     focus_handle: FocusHandle,
@@ -487,10 +488,13 @@ impl Volt {
     fn new(window: &mut Window, cx: &mut App, theme: Arc<ThemeColors>) -> Self {
         let focus_handle = cx.focus_handle();
         focus_handle.focus(window, cx);
+        let playlist = cx.new(|_| PlaylistView::new(Arc::clone(&theme)));
+        let piano_machine = cx.new(|_| PianoMachine::new(playlist.clone()));
 
         Self {
             browser: cx.new(|_| BrowserView::new(Arc::clone(&theme))),
-            playlist: cx.new(|_| PlaylistView::new(Arc::clone(&theme))),
+            playlist,
+            piano_machine,
             browser_size: 0.3,
             theme,
             focus_handle,
@@ -565,6 +569,7 @@ impl Render for Volt {
                     } else {div().pipe(deferred)})
                     .child(self.playlist.clone()),
             )
+            .child(self.piano_machine.clone())
             .child(
                 div()
                     .flex()

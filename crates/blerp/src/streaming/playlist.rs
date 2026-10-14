@@ -487,6 +487,26 @@ impl PlaylistAudio {
         }
     }
 
+    pub fn add_audio_clip(&mut self, track: usize, name: String, data: Arc<[f32]>, channels: usize, start: Beats, end: Beats) -> usize {
+        let clip = Clip::new(
+            name,
+            ClipData::Audio(AudioClipData { data, channels }),
+            false,
+            Arc::new([]),
+            ClipTiming::Beats(ClipTimingBeats {
+                start,
+                end,
+                offset: Beats::default(),
+            }),
+        );
+        let id = clip.id;
+        self.playlist.tracks[track].clips.push(clip);
+        if let Some(out) = &self.out {
+            out.audio_engine_tx.send(AudioEngineMessage::Update(self.playlist.clone())).unwrap();
+        }
+        id
+    }
+
     pub fn move_clips(&mut self, positions: HashMap<usize, (usize, ClipTiming)>) {
         let mut to_move = Vec::new();
         for track in &mut self.playlist.tracks {
